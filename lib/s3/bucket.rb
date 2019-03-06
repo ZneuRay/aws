@@ -1,7 +1,7 @@
 module Aws
 
 
-  class S3::Bucket
+  class AppoxyS3::Bucket
     attr_reader :s3, :name, :owner, :creation_date
 
     # Create a Bucket instance.
@@ -11,15 +11,15 @@ module Aws
     # Returns Bucket instance or +nil+ if the bucket does not exist
     # and +create+ is not set.
     #
-    #  s3 = Aws::S3.new(aws_access_key_id, aws_secret_access_key)
+    #  s3 = Aws::AppoxyS3.new(aws_access_key_id, aws_secret_access_key)
     #   ...
-    #  bucket1 = Aws::S3::Bucket.create(s3, 'my_awesome_bucket_1')
+    #  bucket1 = Aws::AppoxyS3::Bucket.create(s3, 'my_awesome_bucket_1')
     #  bucket1.keys  #=> exception here if the bucket does not exists
     #   ...
-    #  bucket2 = Aws::S3::Bucket.create(s3, 'my_awesome_bucket_2', true)
+    #  bucket2 = Aws::AppoxyS3::Bucket.create(s3, 'my_awesome_bucket_2', true)
     #  bucket2.keys  #=> list of keys
     #  # create a bucket at the European location with public read access
-    #  bucket3 = Aws::S3::Bucket.create(s3,'my-awesome-bucket-3', true, 'public-read', :location => :eu)
+    #  bucket3 = Aws::AppoxyS3::Bucket.create(s3,'my-awesome-bucket-3', true, 'public-read', :location => :eu)
     #
     #  see http://docs.amazonwebservices.com/AmazonS3/2006-03-01/RESTAccessPolicy.html
     #  (section: Canned Access Policies)
@@ -31,7 +31,7 @@ module Aws
 
     # Create a bucket instance. In normal use this method should
     # not be called directly.
-    # Use Aws::S3::Bucket.create or Aws::S3.bucket instead.
+    # Use Aws::AppoxyS3::Bucket.create or Aws::AppoxyS3.bucket instead.
     def initialize(s3, name, creation_date=nil, owner=nil)
       @s3 = s3
       @name = name
@@ -44,7 +44,7 @@ module Aws
 
     # Return bucket name as a String.
     #
-    #  bucket = Aws::S3.bucket('my_awesome_bucket')
+    #  bucket = Aws::AppoxyS3.bucket('my_awesome_bucket')
     #  puts bucket #=> 'my_awesome_bucket'
     #
     def to_s
@@ -141,9 +141,9 @@ module Aws
     # Retrieves meta-header information if +head+ is +true+.
     # Returns new Key instance.
     #
-    #  key = bucket.key('logs/today/1.log', true) #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = bucket.key('logs/today/1.log', true) #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #   # is the same as:
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log')
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log')
     #  key.head
     #
     def key(key_name, head=false)
@@ -198,9 +198,9 @@ module Aws
       return key
     end
 
-    # Rename object. Returns Aws::S3::Key instance.
+    # Rename object. Returns Aws::AppoxyS3::Key instance.
     #
-    #  new_key = bucket.rename_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  new_key = bucket.rename_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  puts key.name   #=> 'logs/today/2.log'
     #  key.exists?     #=> true
     #
@@ -210,9 +210,9 @@ module Aws
       old_key_or_name
     end
 
-    # Create an object copy. Returns a destination Aws::S3::Key instance.
+    # Create an object copy. Returns a destination Aws::AppoxyS3::Key instance.
     #
-    #  new_key = bucket.copy_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  new_key = bucket.copy_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  puts key.name   #=> 'logs/today/2.log'
     #  key.exists?     #=> true
     #
@@ -221,9 +221,9 @@ module Aws
       old_key_or_name.copy(new_key_or_name)
     end
 
-    # Move an object to other location. Returns a destination Aws::S3::Key instance.
+    # Move an object to other location. Returns a destination Aws::AppoxyS3::Key instance.
     #
-    #  new_key = bucket.copy_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  new_key = bucket.copy_key('logs/today/1.log','logs/today/2.log')   #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  puts key.name   #=> 'logs/today/2.log'
     #  key.exists?     #=> true
     #

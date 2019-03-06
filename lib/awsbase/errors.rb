@@ -52,7 +52,7 @@ module Aws
       false
     end
 
-    # Generic handler for AwsErrors. +aws+ is the Aws::S3, Aws::EC2, or Aws::SQS
+    # Generic handler for AwsErrors. +aws+ is the Aws::AppoxyS3, Aws::EC2, or Aws::SQS
     # object that caused the exception (it must provide last_request and last_response). Supported
     # boolean options are:
     # * <tt>:log</tt> print a message into the log using aws.logger to access the Logger

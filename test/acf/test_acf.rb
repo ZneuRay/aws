@@ -10,7 +10,7 @@ class TestAcf < Test::Unit::TestCase
   def setup
       TestCredentials.get_credentials
     @acf= Aws::AcfInterface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
-    @s3 = Aws::S3.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
+    @s3 = Aws::AppoxyS3.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
     @bucket_name   = "right-acf-awesome-test-bucket-0001"
     @bucket_domain = "#{@bucket_name}.s3.amazonaws.com"
   end

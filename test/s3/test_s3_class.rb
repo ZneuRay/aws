@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/../test_credentials.rb'
 class TestS3Class < S3TestBase
 
   #---------------------------
-  # Aws::S3 classes
+  # Aws::AppoxyS3 classes
   #---------------------------
 
   def test_20_s3
@@ -21,7 +21,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_21_bucket_create_put_get_key
-    bucket = Aws::S3::Bucket.create(@s, @bucket, true)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, true)
     # check that the bucket exists
     assert @s.buckets.map { |b| b.name }.include?(@bucket)
     assert bucket.keys.empty?, "keys are not empty: " + bucket.keys.inspect
@@ -31,13 +31,13 @@ class TestS3Class < S3TestBase
     assert_equal RIGHT_OBJECT_TEXT, bucket.get(@key3)
     # get key object
     key = bucket.key(@key3, true)
-    assert_equal Aws::S3::Key, key.class
+    assert_equal Aws::AppoxyS3::Key, key.class
     assert key.exists?
     assert_equal '123456', key.meta_headers['family']
   end
 
   def test_22_bucket_put_big_with_multibyte_chars
-    bucket           = Aws::S3::Bucket.create(@s, @bucket, true)
+    bucket           = Aws::AppoxyS3::Bucket.create(@s, @bucket, true)
     super_big_string = ""
     10000.times { |i| super_big_string << "abcde Café" }
     # this string has multibye values just to mess things up abit.
@@ -51,7 +51,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_23_put_strange_things
-    bucket           = Aws::S3::Bucket.create(@s, @bucket, true)
+    bucket           = Aws::AppoxyS3::Bucket.create(@s, @bucket, true)
 
     # this is kinda bad, you put a nil, but get an empty string back
     assert bucket.put("strange", nil), 'Put bucket fail'
@@ -67,14 +67,14 @@ class TestS3Class < S3TestBase
   end
 
   def test_30_keys
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # create first key
-    key3   = Aws::S3::Key.create(bucket, @key3)
+    key3   = Aws::AppoxyS3::Key.create(bucket, @key3)
     key3.refresh
     assert key3.exists?
     assert_equal '123456', key3.meta_headers['family']
     # create second key
-    key2 = Aws::S3::Key.create(bucket, @key2)
+    key2 = Aws::AppoxyS3::Key.create(bucket, @key2)
     assert !key2.refresh
     assert !key2.exists?
     assert_raise(Aws::AwsError) { key2.head }
@@ -93,7 +93,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_31_rename_key
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # -- 1 -- (key based rename)
     # create a key
     key    = bucket.key('test/copy/1')
@@ -113,7 +113,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_32_copy_key
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # -- 1 -- (key based copy)
     # create a key
     key    = bucket.key('test/copy/10')
@@ -134,7 +134,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_33_move_key
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # -- 1 -- (key based copy)
     # create a key
     key    = bucket.key('test/copy/20')
@@ -153,7 +153,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_40_save_meta
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # create a key
     key    = bucket.key('test/copy/30')
     key.put(RIGHT_OBJECT_TEXT)
@@ -166,7 +166,7 @@ class TestS3Class < S3TestBase
   end
 
   def test_60_clear_delete
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # add another key
     bucket.put(@key2, RIGHT_OBJECT_TEXT)
     # delete 'folder'
@@ -179,7 +179,7 @@ class TestS3Class < S3TestBase
   # No streaming test should be captured in
   # test_21_bucket_create_put_get_key
   def test_61_get_bucket_key_via_streaming
-    bucket = Aws::S3::Bucket.create(@s, @bucket, true)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, true)
     # check that the bucket exists
     assert @s.buckets.map { |b| b.name }.include?(@bucket)
     # put data
@@ -193,7 +193,7 @@ class TestS3Class < S3TestBase
     assert_equal RIGHT_OBJECT_TEXT, data
     # get key object
     key = bucket.key(@key2, true)
-    assert_equal Aws::S3::Key, key.class
+    assert_equal Aws::AppoxyS3::Key, key.class
     assert key.exists?
     assert_equal '123456_61', key.meta_headers['family']
   end

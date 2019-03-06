@@ -11,7 +11,7 @@ class TestS3Rights < S3TestBase
   end
 
   def test_31_list_grantees
-    bucket   = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket   = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # get grantees list
     grantees = bucket.grantees
     # check that the grantees count equal to 2 (root, AllUsers)
@@ -19,9 +19,9 @@ class TestS3Rights < S3TestBase
   end
 
   def test_32_grant_revoke_drop
-    bucket  = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket  = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # Take 'AllUsers' grantee
-    grantee = Aws::S3::Grantee.new(bucket, 'http://acs.amazonaws.com/groups/global/AllUsers')
+    grantee = Aws::AppoxyS3::Grantee.new(bucket, 'http://acs.amazonaws.com/groups/global/AllUsers')
     # Check exists?
     assert grantee.exists?
     # Add grant as String
@@ -74,7 +74,7 @@ class TestS3Rights < S3TestBase
   end
 
   def test_34_bucket_create_put_with_perms
-    bucket = Aws::S3::Bucket.create(@s, @bucket, true)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, true)
     # check that the bucket exists
     assert @s.buckets.map { |b| b.name }.include?(@bucket)
     assert bucket.keys.empty?
@@ -84,15 +84,15 @@ class TestS3Rights < S3TestBase
     assert_equal RIGHT_OBJECT_TEXT, bucket.get(@key1)
     # get key object
     key = bucket.key(@key1, true)
-    assert_equal Aws::S3::Key, key.class
+    assert_equal Aws::AppoxyS3::Key, key.class
     assert key.exists?
     assert_equal '123456', key.meta_headers['family']
   end
 
   def test_35_key_put_with_perms
-    bucket = Aws::S3::Bucket.create(@s, @bucket, false)
+    bucket = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
     # create first key
-    key1   = Aws::S3::Key.create(bucket, @key1)
+    key1   = Aws::AppoxyS3::Key.create(bucket, @key1)
     key1.refresh
     assert key1.exists?
     assert key1.put(RIGHT_OBJECT_TEXT, "public-read")
@@ -104,21 +104,21 @@ class TestS3Rights < S3TestBase
   end
 
   def test_36_set_amazon_problems
-    original_problems = Aws::S3Interface.amazon_problems
+    original_problems = Aws::AppoxyS3Interface.amazon_problems
     assert(original_problems.length > 0)
-    Aws::S3Interface.amazon_problems= original_problems << "A New Problem"
-    new_problems                    = Aws::S3Interface.amazon_problems
+    Aws::AppoxyS3Interface.amazon_problems= original_problems << "A New Problem"
+    new_problems                    = Aws::AppoxyS3Interface.amazon_problems
     assert_equal(new_problems, original_problems)
 
-    Aws::S3Interface.amazon_problems= nil
-    assert_nil(Aws::S3Interface.amazon_problems)
+    Aws::AppoxyS3Interface.amazon_problems= nil
+    assert_nil(Aws::AppoxyS3Interface.amazon_problems)
   end
 
   def test_37_access_logging
-    bucket       = Aws::S3::Bucket.create(@s, @bucket, false)
-    targetbucket = Aws::S3::Bucket.create(@s, @bucket2, true)
+    bucket       = Aws::AppoxyS3::Bucket.create(@s, @bucket, false)
+    targetbucket = Aws::AppoxyS3::Bucket.create(@s, @bucket2, true)
     # Take 'AllUsers' grantee
-    grantee      = Aws::S3::Grantee.new(targetbucket, 'http://acs.amazonaws.com/groups/s3/LogDelivery')
+    grantee      = Aws::AppoxyS3::Grantee.new(targetbucket, 'http://acs.amazonaws.com/groups/s3/LogDelivery')
 
     assert grantee.grant(['READ_ACP', 'WRITE'])
 

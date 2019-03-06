@@ -1,7 +1,7 @@
 module Aws
 
 
-  class S3::Key
+  class AppoxyS3::Key
 
     attr_reader :bucket, :name, :last_modified, :e_tag, :size, :storage_class, :owner
     attr_accessor :headers, :meta_headers
@@ -37,7 +37,7 @@ module Aws
     # The +name+ is a +String+.
     # Returns a new Key instance.
     #
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  key.exists?                                                  #=> true | false
     #  key.put('Woohoo!')                                           #=> true
     #  key.exists?                                                  #=> true
@@ -48,7 +48,7 @@ module Aws
 
     # Create a new Key instance, but do not create the actual key.
     # In normal use this method should not be called directly.
-    # Use Aws::S3::Key.create or bucket.key() instead.
+    # Use Aws::AppoxyS3::Key.create or bucket.key() instead.
     #
     def initialize(bucket, name, data=nil, headers={}, meta_headers={},
         last_modified=nil, e_tag=nil, size=nil, storage_class=nil, owner=nil)
@@ -70,7 +70,7 @@ module Aws
 
     # Return key name as a String.
     #
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  puts key                                                   #=> 'logs/today/1.log'
     #
     def to_s
@@ -117,7 +117,7 @@ module Aws
     # Parameter +data+ is a +String+ or S3Object instance.
     # Returns +true+.
     #
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log')
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log')
     #  key.data = 'Qwerty'
     #  key.put             #=> true
     #   ...
@@ -132,7 +132,7 @@ module Aws
 
     # Rename an object. Returns new object name.
     #
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  key.rename('logs/today/2.log')   #=> 'logs/today/2.log'
     #  puts key.name                    #=> 'logs/today/2.log'
     #  key.exists?                      #=> true
@@ -142,21 +142,21 @@ module Aws
       @name = new_name
     end
 
-    # Create an object copy. Returns a destination Aws::S3::Key instance.
+    # Create an object copy. Returns a destination Aws::AppoxyS3::Key instance.
     #
     #  # Key instance as destination
-    #  key1 = Aws::S3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
-    #  key2 = Aws::S3::Key.create(bucket, 'logs/today/2.log') #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  key1 = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
+    #  key2 = Aws::AppoxyS3::Key.create(bucket, 'logs/today/2.log') #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key1.put('Olala!')   #=> true
-    #  key1.copy(key2)      #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  key1.copy(key2)      #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key1.exists?         #=> true
     #  key2.exists?         #=> true
     #  puts key2.data       #=> 'Olala!'
     #
     #  # String as destination
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/777.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/777.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  key.put('Olala!')                          #=> true
-    #  new_key = key.copy('logs/today/888.log')   #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  new_key = key.copy('logs/today/888.log')   #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key.exists?                                #=> true
     #  new_key.exists?                            #=> true
     #
@@ -166,21 +166,21 @@ module Aws
       new_key_or_name
     end
 
-    # Move an object to other location. Returns a destination Aws::S3::Key instance.
+    # Move an object to other location. Returns a destination Aws::AppoxyS3::Key instance.
     #
     #  # Key instance as destination
-    #  key1 = Aws::S3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
-    #  key2 = Aws::S3::Key.create(bucket, 'logs/today/2.log') #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  key1 = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
+    #  key2 = Aws::AppoxyS3::Key.create(bucket, 'logs/today/2.log') #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key1.put('Olala!')   #=> true
-    #  key1.move(key2)      #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  key1.move(key2)      #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key1.exists?         #=> false
     #  key2.exists?         #=> true
     #  puts key2.data       #=> 'Olala!'
     #
     #  # String as destination
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/777.log') #=> #<Aws::S3::Key:0xb7b1e240 ... >
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/777.log') #=> #<Aws::AppoxyS3::Key:0xb7b1e240 ... >
     #  key.put('Olala!')                          #=> true
-    #  new_key = key.move('logs/today/888.log')   #=> #<Aws::S3::Key:0xb7b5e240 ... >
+    #  new_key = key.move('logs/today/888.log')   #=> #<Aws::AppoxyS3::Key:0xb7b5e240 ... >
     #  key.exists?                                #=> false
     #  new_key.exists?                            #=> true
     #
@@ -194,7 +194,7 @@ module Aws
     # Refresh meta-headers (by calling +head+ method) if +head+ is set.
     # Returns +true+ if the key exists in bucket and +false+ otherwise.
     #
-    #  key = Aws::S3::Key.create(bucket, 'logs/today/1.log')
+    #  key = Aws::AppoxyS3::Key.create(bucket, 'logs/today/1.log')
     #  key.e_tag        #=> nil
     #  key.meta_headers #=> {}
     #  key.refresh      #=> true
@@ -252,7 +252,7 @@ module Aws
     # Check for existence of the key in the given bucket.
     # Returns +true+ or +false+.
     #
-    #  key = Aws::S3::Key.create(bucket,'logs/today/1.log')
+    #  key = Aws::AppoxyS3::Key.create(bucket,'logs/today/1.log')
     #  key.exists?        #=> false
     #  key.put('Woohoo!') #=> true
     #  key.exists?        #=> true

@@ -61,7 +61,7 @@ module Aws
 
     # Creates new RightS3 instance.
     #
-    #  s3 = Aws::S3Interface.new('1E3GDYEOGFJPIT7XXXXXX','hgTHt68JY07JKUY08ftHYtERkjgtfERn57XXXXXX', {:multi_thread => true, :logger => Logger.new('/tmp/x.log')}) #=> #<Aws::S3Interface:0xb7b3c27c>
+    #  s3 = Aws::AppoxyS3Interface.new('1E3GDYEOGFJPIT7XXXXXX','hgTHt68JY07JKUY08ftHYtERkjgtfERn57XXXXXX', {:multi_thread => true, :logger => Logger.new('/tmp/x.log')}) #=> #<Aws::AppoxyS3Interface:0xb7b3c27c>
     #
     # Params is a hash:
     #

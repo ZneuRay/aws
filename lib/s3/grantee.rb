@@ -15,19 +15,19 @@ module Aws
   # 'READ_ACP', 'WRITE_ACP', 'FULL_CONTROL'):
   #
   #  bucket  = s3.bucket('my_awesome_bucket', true)
-  #  grantee1 = Aws::S3::Grantee.new(bucket, 'a123b...223c', FULL_CONTROL, :apply)
-  #  grantee2 = Aws::S3::Grantee.new(bucket, 'xy3v3...5fhp', [READ, WRITE], :apply)
+  #  grantee1 = Aws::AppoxyS3::Grantee.new(bucket, 'a123b...223c', FULL_CONTROL, :apply)
+  #  grantee2 = Aws::AppoxyS3::Grantee.new(bucket, 'xy3v3...5fhp', [READ, WRITE], :apply)
   #
   # There is only one way to get and to remove permission (via Grantee instances):
   #
   #  grantees = bucket.grantees # a list of Grantees that have any access for this bucket
-  #  grantee1 = Aws::S3::Grantee.new(bucket, 'a123b...223c')
+  #  grantee1 = Aws::AppoxyS3::Grantee.new(bucket, 'a123b...223c')
   #  grantee1.perms #=> returns a list of perms for this grantee to that bucket
   #    ...
   #  grantee1.drop             # remove all perms for this grantee
   #  grantee2.revoke('WRITE')  # revoke write access only
   #
-  class S3::Grantee
+  class AppoxyS3::Grantee
     # A bucket or a key the grantee has an access to.
     attr_reader :thing
     # Grantee Amazon id.
@@ -42,7 +42,7 @@ module Aws
     #
     #  bucket = s3.bucket('my_awesome_bucket', true, 'public-read')
     #   ...
-    #  Aws::S3::Grantee.owner_and_grantees(bucket) #=> [owner, grantees]
+    #  Aws::AppoxyS3::Grantee.owner_and_grantees(bucket) #=> [owner, grantees]
     #
     def self.owner_and_grantees(thing)
       if thing.is_a?(S3::Bucket)
@@ -64,7 +64,7 @@ module Aws
     #
     #  bucket = s3.bucket('my_awesome_bucket', true, 'public-read')
     #   ...
-    #  Aws::S3::Grantee.grantees(bucket) #=> grantees
+    #  Aws::AppoxyS3::Grantee.grantees(bucket) #=> grantees
     #
     def self.grantees(thing)
       owner_and_grantees(thing)[1]
@@ -96,10 +96,10 @@ module Aws
     # this thing before. The default action is :refresh.
     #
     #  bucket = s3.bucket('my_awesome_bucket', true, 'public-read')
-    #  grantee1 = Aws::S3::Grantee.new(bucket, 'a123b...223c', FULL_CONTROL)
+    #  grantee1 = Aws::AppoxyS3::Grantee.new(bucket, 'a123b...223c', FULL_CONTROL)
     #    ...
-    #  grantee2 = Aws::S3::Grantee.new(bucket, 'abcde...asdf', [FULL_CONTROL, READ], :apply)
-    #  grantee3 = Aws::S3::Grantee.new(bucket, 'aaaaa...aaaa', 'READ', :apply_and_refresh)
+    #  grantee2 = Aws::AppoxyS3::Grantee.new(bucket, 'abcde...asdf', [FULL_CONTROL, READ], :apply)
+    #  grantee3 = Aws::AppoxyS3::Grantee.new(bucket, 'aaaaa...aaaa', 'READ', :apply_and_refresh)
     #
     def initialize(thing, id, perms=[], action=:refresh, name=nil)
       @thing = thing

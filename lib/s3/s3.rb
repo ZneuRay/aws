@@ -22,8 +22,8 @@
 #
 module Aws
 
-  # = Aws::S3 -- RightScale's Amazon S3 interface
-  # The Aws::S3 class provides a complete interface to Amazon's Simple
+  # = Aws::AppoxyS3 -- RightScale's Amazon S3 interface
+  # The Aws::AppoxyS3 class provides a complete interface to Amazon's Simple
   # Storage Service.
   # For explanations of the semantics
   # of each call, please refer to Amazon's documentation at
@@ -46,7 +46,7 @@ module Aws
   #
   # See: http://docs.amazonwebservices.com/AmazonS3/2006-03-01/VirtualHosting.html for better explanation.
   #
-  class S3
+  class AppoxyS3
 
 
     class Owner
@@ -73,7 +73,7 @@ module Aws
 
     # Create a new handle to an S3 account. All handles share the same per process or per thread
     # HTTP connection to Amazon S3. Each handle is for a specific account.
-    # The +params+ are passed through as-is to Aws::S3Interface.new
+    # The +params+ are passed through as-is to Aws::AppoxyS3Interface.new
     #
     # Params is a hash:
     #
@@ -96,9 +96,9 @@ module Aws
     end
 
     # Retrieve a list of buckets.
-    # Returns an array of Aws::S3::Bucket instances.
+    # Returns an array of Aws::AppoxyS3::Bucket instances.
     #  # Create handle to S3 account
-    #  s3 = Aws::S3.new(aws_access_key_id, aws_secret_access_key)
+    #  s3 = Aws::AppoxyS3.new(aws_access_key_id, aws_secret_access_key)
     #  my_buckets_names = s3.buckets.map{|b| b.name}
     #  puts "Buckets on S3: #{my_bucket_names.join(', ')}"
     def buckets
@@ -112,12 +112,12 @@ module Aws
     # If the bucket does not exist and +create+ is set, a new bucket
     # is created on S3. Launching this method with +create+=+true+ may
     # affect on the bucket's ACL if the bucket already exists.
-    # Returns a Aws::S3::Bucket instance or +nil+ if the bucket does not exist
+    # Returns a Aws::AppoxyS3::Bucket instance or +nil+ if the bucket does not exist
     # and +create+ is not set.
     # If +create+ is true, false will be returned if an error occurs. Such as the
     # bucket already exists
     #
-    #  s3 = Aws::S3.new(aws_access_key_id, aws_secret_access_key)
+    #  s3 = Aws::AppoxyS3.new(aws_access_key_id, aws_secret_access_key)
     #  bucket1 = s3.bucket('my_awesome_bucket_1')
     #  bucket1.keys  #=> exception here if the bucket does not exists
     #   ...
@@ -145,20 +145,20 @@ module Aws
 
   end
 
-  # Aws::S3Generator and Aws::S3Generator::Bucket methods:
+  # Aws::AppoxyS3Generator and Aws::AppoxyS3Generator::Bucket methods:
   #
-  #  s3g = Aws::S3Generator.new('1...2', 'nx...Y6') #=> #<Aws::S3Generator:0xb7b5cc94>
+  #  s3g = Aws::AppoxyS3Generator.new('1...2', 'nx...Y6') #=> #<Aws::AppoxyS3Generator:0xb7b5cc94>
   #
   #    # List all buckets(method 'GET'):
   #  buckets_list = s3g.buckets #=> 'https://s3.amazonaws.com:443/?Signature=Y...D&Expires=1180941864&AWSAccessKeyId=1...2'
   #    # Create bucket link (method 'PUT'):
-  #  bucket = s3g.bucket('my_awesome_bucket')     #=> #<Aws::S3Generator::Bucket:0xb7bcbda8>
+  #  bucket = s3g.bucket('my_awesome_bucket')     #=> #<Aws::AppoxyS3Generator::Bucket:0xb7bcbda8>
   #  link_to_create = bucket.create_link(1.hour)  #=> https://s3.amazonaws.com:443/my_awesome_bucket?Signature=4...D&Expires=1180942132&AWSAccessKeyId=1...2
   #    # ... or:
-  #  bucket = Aws::S3Generator::Bucket.create(s3g, 'my_awesome_bucket') #=> #<Aws::S3Generator::Bucket:0xb7bcbda8>
+  #  bucket = Aws::AppoxyS3Generator::Bucket.create(s3g, 'my_awesome_bucket') #=> #<Aws::AppoxyS3Generator::Bucket:0xb7bcbda8>
   #  link_to_create = bucket.create_link(1.hour)                                 #=> https://s3.amazonaws.com:443/my_awesome_bucket?Signature=4...D&Expires=1180942132&AWSAccessKeyId=1...2
   #    # ... or:
-  #  bucket = Aws::S3Generator::Bucket.new(s3g, 'my_awesome_bucket') #=> #<Aws::S3Generator::Bucket:0xb7bcbda8>
+  #  bucket = Aws::AppoxyS3Generator::Bucket.new(s3g, 'my_awesome_bucket') #=> #<Aws::AppoxyS3Generator::Bucket:0xb7bcbda8>
   #  link_to_create = bucket.create_link(1.hour)                              #=> https://s3.amazonaws.com:443/my_awesome_bucket?Signature=4...D&Expires=1180942132&AWSAccessKeyId=1...2
   #    # List bucket(method 'GET'):
   #  bucket.keys(1.day) #=> https://s3.amazonaws.com:443/my_awesome_bucket?Signature=i...D&Expires=1180942620&AWSAccessKeyId=1...2
@@ -169,10 +169,10 @@ module Aws
   #    # Delete bucket (method 'DELETE'):
   #  bucket.delete(2.hour) #=> https://s3.amazonaws.com:443/my_awesome_bucket/logs%2Ftoday%2F1.log?Signature=4...D&Expires=1180820032&AWSAccessKeyId=1...2
   #
-  # Aws::S3Generator::Key methods:
+  # Aws::AppoxyS3Generator::Key methods:
   #
   #    # Create Key instance:
-  #  key = Aws::S3Generator::Key.new(bicket, 'my_cool_key') #=> #<Aws::S3Generator::Key:0xb7b7394c>
+  #  key = Aws::AppoxyS3Generator::Key.new(bicket, 'my_cool_key') #=> #<Aws::AppoxyS3Generator::Key:0xb7b7394c>
   #    # Put key data (method 'PUT'):
   #  key.put    #=> https://s3.amazonaws.com:443/my_awesome_bucket/my_cool_key?Signature=2...D&Expires=1180943302&AWSAccessKeyId=1...2
   #    # Get key data (method 'GET'):
@@ -262,7 +262,7 @@ module Aws
       #  puts bucket.put('logs/today/1.log', 2.hour)
       #
       def put(key, meta_headers={}, expires=nil, headers={})
-        meta = Aws::S3::Key.add_meta_prefix(meta_headers)
+        meta = Aws::AppoxyS3::Key.add_meta_prefix(meta_headers)
         @s3.interface.put_link(@name, key.to_s, nil, expires, meta.merge(headers))
       end
 

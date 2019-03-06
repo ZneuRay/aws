@@ -29,7 +29,7 @@ CloudFront.
 The AWS gems comprise:
 
 - Aws::Ec2 -- interface to Amazon EC2 (Elastic Compute Cloud) and the associated EBS (Elastic Block Store)
-- Aws::S3 and Aws::S3Interface -- interface to Amazon S3 (Simple Storage Service)
+- Aws::AppoxyS3 and Aws::AppoxyS3Interface -- interface to Amazon S3 (Simple Storage Service)
 - Aws::Sqs and Aws::SqsInterface -- interface to Amazon SQS (Simple Queue Service)
 - Aws::SdbInterface -- interface to Amazon SDB (SimpleDB). See [SimpleRecord for an ActiveRecord like gem](https://github.com/appoxy/simple_record).
 - Aws::AcfInterface -- interface to Amazon CloudFront, a content distribution service
@@ -72,7 +72,7 @@ All AWS interfaces offer three threading options:
 2. Use a persistent HTTP connection per Ruby thread. :per_thread
 3. Open a new connection for each request. :per_request
  
-Either way, it doesn't matter how many (for example) Aws::S3 objects you create,
+Either way, it doesn't matter how many (for example) Aws::AppoxyS3 objects you create,
 they all use the same per-program or per-thread
 connection. The purpose of sharing the connection is to keep a single
 persistent HTTP connection open to avoid paying connection

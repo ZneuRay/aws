@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../test_credentials.rb'
 class TestS3 < S3TestBase
 
   #---------------------------
-  # Aws::S3Interface
+  # Aws::AppoxyS3Interface
   #---------------------------
 
   def test_01_create_bucket
@@ -147,7 +147,7 @@ class TestS3 < S3TestBase
   # idle timeout is 20 seconds
   # https://forums.aws.amazon.com/thread.jspa?threadID=58038
   def test_15_idle_timeout
-    @s3 = Aws::S3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key,
+    @s3 = Aws::AppoxyS3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key,
                                :connection_mode=>:single)
     # Disable connection retrying
     Aws::AWSErrorHandler.close_on_error = false
@@ -158,7 +158,7 @@ class TestS3 < S3TestBase
     end
 
     # now try again with retry mode
-     @s3 = Aws::S3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key,
+     @s3 = Aws::AppoxyS3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key,
                                :connection_mode=>:single)
     Aws::AWSErrorHandler.close_on_error = true
     assert @s3.put(@bucket, @key1, RIGHT_OBJECT_TEXT, 'x-amz-meta-family'=>'Woohoo1!'), 'Put bucket fail'

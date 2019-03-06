@@ -7,11 +7,11 @@ class TestS3Stubbed < Test::Unit::TestCase
   
   def setup
       TestCredentials.get_credentials
-    @s3     = Aws::S3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
+    @s3     = Aws::AppoxyS3Interface.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
     @bucket = 'right_s3_awesome_test_bucket'
     @key1   = 'test/woohoo1'
     @key2   = 'test1/key/woohoo2'
-    @s      = Aws::S3.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
+    @s      = Aws::AppoxyS3.new(TestCredentials.aws_access_key_id, TestCredentials.aws_secret_access_key)
     Rightscale::HttpConnection.reset
   end
 
