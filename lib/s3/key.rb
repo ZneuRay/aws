@@ -52,7 +52,7 @@ module Aws
     #
     def initialize(bucket, name, data=nil, headers={}, meta_headers={},
         last_modified=nil, e_tag=nil, size=nil, storage_class=nil, owner=nil)
-      raise 'Bucket must be a Bucket instance.' unless bucket.is_a?(S3::Bucket)
+      raise 'Bucket must be a Bucket instance.' unless bucket.is_a?(AppoxyS3::Bucket)
       @bucket        = bucket
       @name          = name
       @data          = data
@@ -161,7 +161,7 @@ module Aws
     #  new_key.exists?                            #=> true
     #
     def copy(new_key_or_name)
-      new_key_or_name = S3::Key.create(@bucket, new_key_or_name.to_s) unless new_key_or_name.is_a?(S3::Key)
+      new_key_or_name = AppoxyS3::Key.create(@bucket, new_key_or_name.to_s) unless new_key_or_name.is_a?(AppoxyS3::Key)
       @bucket.s3.interface.copy(@bucket.name, @name, new_key_or_name.bucket.name, new_key_or_name.name)
       new_key_or_name
     end
@@ -185,7 +185,7 @@ module Aws
     #  new_key.exists?                            #=> true
     #
     def move(new_key_or_name)
-      new_key_or_name = S3::Key.create(@bucket, new_key_or_name.to_s) unless new_key_or_name.is_a?(S3::Key)
+      new_key_or_name = AppoxyS3::Key.create(@bucket, new_key_or_name.to_s) unless new_key_or_name.is_a?(AppoxyS3::Key)
       @bucket.s3.interface.move(@bucket.name, @name, new_key_or_name.bucket.name, new_key_or_name.name)
       new_key_or_name
     end

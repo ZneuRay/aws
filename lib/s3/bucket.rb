@@ -124,8 +124,8 @@ module Aws
       @s3.interface.incrementally_list_bucket(@name, opt) do |thislist|
         service_list = thislist
         thislist[:contents].each do |entry|
-          owner = S3::Owner.new(entry[:owner_id], entry[:owner_display_name])
-          key = S3::Key.new(self, entry[:key], nil, {}, {}, entry[:last_modified], entry[:e_tag], entry[:size], entry[:storage_class], owner)
+          owner = AppoxyS3::Owner.new(entry[:owner_id], entry[:owner_display_name])
+          key = AppoxyS3::Key.new(self, entry[:key], nil, {}, {}, entry[:last_modified], entry[:e_tag], entry[:size], entry[:storage_class], owner)
           key.head if head
           list << key
         end
@@ -158,7 +158,7 @@ module Aws
       end
       # .... else this key is unknown
       unless key_instance
-        key_instance = S3::Key.create(self, key_name.to_s)
+        key_instance = AppoxyS3::Key.create(self, key_name.to_s)
       end
       key_instance
     end
@@ -170,7 +170,7 @@ module Aws
     #  bucket.put('logs/today/1.log', 'Olala!') #=> true
     #
     def put(key, data=nil, meta_headers={}, perms=nil, headers={})
-      key = S3::Key.create(self, key.to_s, data, meta_headers) unless key.is_a?(S3::Key)
+      key = AppoxyS3::Key.create(self, key.to_s, data, meta_headers) unless key.is_a?(AppoxyS3::Key)
       key.put(data, perms, headers)
     end
 
@@ -182,7 +182,7 @@ module Aws
     #  puts data #=> 'sasfasfasdf'
     #
     def get(key, headers={}, &block)
-      key = S3::Key.create(self, key.to_s) unless key.is_a?(S3::Key)
+      key = AppoxyS3::Key.create(self, key.to_s) unless key.is_a?(AppoxyS3::Key)
       key.get(headers, &block)
     end
 
@@ -194,7 +194,7 @@ module Aws
     #  puts key.data #=> 'sasfasfasdf'
     #
     def get_key(key, headers={})
-      key = S3::Key.create(self, key.to_s, headers) unless key.is_a?(S3::Key)
+      key = AppoxyS3::Key.create(self, key.to_s, headers) unless key.is_a?(AppoxyS3::Key)
       return key
     end
 
@@ -205,7 +205,7 @@ module Aws
     #  key.exists?     #=> true
     #
     def rename_key(old_key_or_name, new_name)
-      old_key_or_name = S3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(S3::Key)
+      old_key_or_name = AppoxyS3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(AppoxyS3::Key)
       old_key_or_name.rename(new_name)
       old_key_or_name
     end
@@ -217,7 +217,7 @@ module Aws
     #  key.exists?     #=> true
     #
     def copy_key(old_key_or_name, new_key_or_name)
-      old_key_or_name = S3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(S3::Key)
+      old_key_or_name = AppoxyS3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(AppoxyS3::Key)
       old_key_or_name.copy(new_key_or_name)
     end
 
@@ -228,7 +228,7 @@ module Aws
     #  key.exists?     #=> true
     #
     def move_key(old_key_or_name, new_key_or_name)
-      old_key_or_name = S3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(S3::Key)
+      old_key_or_name = AppoxyS3::Key.create(self, old_key_or_name.to_s) unless old_key_or_name.is_a?(AppoxyS3::Key)
       old_key_or_name.move(new_key_or_name)
     end
 

@@ -45,13 +45,13 @@ module Aws
     #  Aws::AppoxyS3::Grantee.owner_and_grantees(bucket) #=> [owner, grantees]
     #
     def self.owner_and_grantees(thing)
-      if thing.is_a?(S3::Bucket)
+      if thing.is_a?(AppoxyS3::Bucket)
         bucket, key = thing, ''
       else
         bucket, key = thing.bucket, thing
       end
       hash     = bucket.s3.interface.get_acl_parse(bucket.to_s, key.to_s)
-      owner    = S3::Owner.new(hash[:owner][:id], hash[:owner][:display_name])
+      owner    = AppoxyS3::Owner.new(hash[:owner][:id], hash[:owner][:display_name])
 
       grantees = []
       hash[:grantees].each do |id, params|
@@ -71,7 +71,7 @@ module Aws
     end
 
     def self.put_acl(thing, owner, grantees) #:nodoc:
-      if thing.is_a?(S3::Bucket)
+      if thing.is_a?(AppoxyS3::Bucket)
         bucket, key = thing, ''
       else
         bucket, key = thing.bucket, thing
